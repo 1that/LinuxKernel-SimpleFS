@@ -64,6 +64,8 @@ static int ioctl_erase(struct super_block *sb)
     err = sync_blockdev(sb->s_bdev);
     if (err)
         return err;
+
+    fsi->erased = true;
     
     printk(KERN_INFO "simplefs: ФС стёрта\n");
     return 0;

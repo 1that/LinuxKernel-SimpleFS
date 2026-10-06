@@ -38,6 +38,7 @@ struct simplefs_info {
     u32 sb1_sector;
     u32 file_sectors;
     u32 file_count;
+    bool erased;
 };
 
 long simplefs_ioctl(struct file *file, unsigned int cmd, unsigned long arg);

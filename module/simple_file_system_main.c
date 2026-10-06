@@ -230,8 +230,12 @@ static ssize_t read_file(struct file *file, char __user *buf, size_t len, loff_t
     loff_t pos = *ppos;
     size_t done = 0;
 
+    if (fsi->erased)
+        return -EIO;
+
     if (pos >= inode->i_size)
         return 0;
+    
     if (len > inode->i_size - pos)
         len = inode->i_size - pos;
 
@@ -267,10 +271,15 @@ static ssize_t write_file(struct file *file, const char __user *buf, size_t len,
     loff_t pos = *ppos;
     size_t done = 0;
 
+    if (fsi->erased)
+        return -EIO;
+
     if (len == 0)
         return 0;
+
     if (pos >= inode->i_size)
         return -EFBIG;
+    
     if (len > inode->i_size - pos)
         len = inode->i_size - pos;
 
@@ -352,6 +361,8 @@ static struct dentry *dir_lookup(struct inode *dir, struct dentry *dentry, unsig
     unsigned int i;
     u64 n = 0;
 
+    if (fsi->erased)
+        goto out;
     if (len > name_max)
         return ERR_PTR(-ENAMETOOLONG);
     if (len <= SIMPLEFS_NAME_PREFIX_LEN || len > SIMPLEFS_NAME_MAX_LEN ||
@@ -383,6 +394,9 @@ static int ls_dir(struct file *file, struct dir_context *ctx)
     struct simplefs_info *fsi = (file_inode(file)->i_sb)->s_fs_info;
     char name[SIMPLEFS_NAME_MAX_LEN + 1];
     int len;
+    
+    if (fsi->erased)
+        return 0;
 
     if (!dir_emit_dots(file, ctx))
         return 0;
