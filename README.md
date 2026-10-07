@@ -59,3 +59,10 @@ echo text > /mnt/sfs/file0
 ```
 cat /mnt/sfs/file0
 ```
+
+### Завершение работы
+```
+sudo umount /mnt/sfs
+sudo rmmod simple_file_system
+sudo losetup -d $LOOP
+```
