@@ -41,6 +41,12 @@ sudo mount -t simplefs -o file_sectors=2 $LOOP /mnt/sfs
 ```
 ./userspace /mnt/sfs zero
 ```
+маппинг секторов для заданного файла
+для файла0:
+```
+./userspace /mnt/sfs 0 
+```
+
 Стереть ФС:
 ```
 ./userspace /mnt/sfs erase
