@@ -25,7 +25,7 @@ sudo insmod simple_file_system.ko device_name=$LOOP sb0_sector=0 sb1_sector=1024
 ### Монтирование
 ```
 sudo mkdir -p /mnt/sfs
-sudo mount -t simplefs $LOOP /mnt/sfs
+sudo mount -t simplefs -o file_sectors=2 $LOOP /mnt/sfs
 ```
 
 ### userspace

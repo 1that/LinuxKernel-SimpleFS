@@ -160,6 +160,9 @@ long simplefs_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
     struct super_block *sb = file_inode(file)->i_sb;
 
+    if (fsi->erased)
+        return -EIO;
+
     switch (cmd) {
         case SIMPLEFS_IOC_ZERO:
             return ioctl_zero(sb);
